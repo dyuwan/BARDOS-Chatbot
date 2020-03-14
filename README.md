@@ -5,4 +5,4 @@ A mental health companion, to help you brighten your day and provide basic couns
   <li>Bhavya Sheth</li>
   <li>Anuj Raghani</li>
   <li>Dyuwan Shukla</li>
-  <li>Owais Hetavkar</li>
+  <li>Owais Hetavkar @owaisjh </li>
