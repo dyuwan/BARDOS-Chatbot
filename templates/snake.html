@@ -1,0 +1,179 @@
+<!-- {% block content %} -->
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+    <title>Home - Brand</title>
+    <link rel="stylesheet" href="static/assets_home/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Montserrat:400,700">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Kaushan+Script">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Droid+Serif:400,700,400italic,700italic">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto+Slab:400,100,300,700">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Aguafina+Script">
+    <link rel="stylesheet" href="static/assets_home/fonts/font-awesome.min.css">
+    <style>
+    html, body {
+        height: 100%;
+        margin: 0;
+    }
+
+    body {
+        background: white;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    canvas {
+        border: 3px solid gold;
+    }
+    </style>
+
+</head>
+<body id="page-top" style="background-color: grey;">
+    <nav class="navbar navbar-dark navbar-expand-lg bg-dark" id="mainNav">
+        <div class="container"><a class="navbar-brand" href="/" style="font-family: 'Kaushan Script', cursive;font-weight: bold;font-style: normal;">BARDOS</a><button data-toggle="collapse" data-target="#navbarResponsive" class="navbar-toggler navbar-toggler-right" type="button"
+                data-toogle="collapse" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation"><i class="fa fa-bars"></i></button>
+            <div class="collapse navbar-collapse" id="navbarResponsive">
+                <ul class="nav navbar-nav ml-auto text-uppercase">
+                    <li class="nav-item" role="presentation"><a class="nav-link js-scroll-trigger" href="/services">Services</a></li>
+                    <li class="nav-item" role="presentation"></li>
+                    <li class="nav-item" role="presentation"><a class="nav-link js-scroll-trigger" href="/about">About</a></li>
+                    
+                    <li class="nav-item" role="presentation"><a class="nav-link js-scroll-trigger" href="/contact">Contact</a></li>
+                    <li class="nav-item" role="presentation"><a class="nav-link js-scroll-trigger" href="/extras">Extras</a></li>
+                  </ul>
+            </div>
+        </div>
+    </nav>
+
+<canvas width="400" height="400" id="game"></canvas>
+<script>
+var canvas = document.getElementById('game');
+var context = canvas.getContext('2d');
+
+var grid = 16;
+var count = 0;
+ 
+var snake = {
+  x: 160,
+  y: 160,
+ 
+  dx: grid,
+  dy: 0,
+ 
+  cells: [],
+ 
+  maxCells: 4
+};
+var apple = {
+  x: 320,
+  y: 320
+};
+
+function getRandomInt(min, max) {
+  return Math.floor(Math.random() * (max - min)) + min;
+}
+
+function loop() {
+  requestAnimationFrame(loop);
+
+  // slow game loop to 12 fps instead of 60 (60/12 = 4)
+  if (++count < 5.5) {
+    return;
+  }
+
+  count = 0;
+  context.clearRect(0,0,canvas.width,canvas.height);
+
+  snake.x += snake.dx;
+  snake.y += snake.dy;
+
+  if (snake.x < 0) {
+    snake.x = canvas.width - grid;
+  }
+  else if (snake.x >= canvas.width) {
+    snake.x = 0;
+  }
+ 
+  if (snake.y < 0) {
+    snake.y = canvas.height - grid;
+  }
+  else if (snake.y >= canvas.height) {
+    snake.y = 0;
+  }
+
+  snake.cells.unshift({x: snake.x, y: snake.y});
+
+  if (snake.cells.length > snake.maxCells) {
+    snake.cells.pop();
+  }
+
+  context.fillStyle = 'blue';
+  context.fillRect(apple.x, apple.y, grid-1, grid-1);
+
+  context.fillStyle = 'gold';
+  snake.cells.forEach(function(cell, index) {
+   
+    context.fillRect(cell.x, cell.y, grid-1, grid-1);  
+
+    if (cell.x === apple.x && cell.y === apple.y) {
+      snake.maxCells++;
+
+      apple.x = getRandomInt(0, 25) * grid;
+      apple.y = getRandomInt(0, 25) * grid;
+    }
+
+    for (var i = index + 1; i < snake.cells.length; i++) {
+     
+      // reset game
+      if (cell.x === snake.cells[i].x && cell.y === snake.cells[i].y) {
+        snake.x = 160;
+        snake.y = 160;
+        snake.cells = [];
+        snake.maxCells = 4;
+        snake.dx = grid;
+        snake.dy = 0;
+
+        apple.x = getRandomInt(0, 25) * grid;
+        apple.y = getRandomInt(0, 25) * grid;
+      }
+    }
+  });
+}
+
+document.addEventListener('keydown', function(e) {
+ 
+  // left arrow key
+  if (e.which === 37 && snake.dx === 0) {
+    snake.dx = -grid;
+    snake.dy = 0;
+  }
+  // up arrow key
+  else if (e.which === 38 && snake.dy === 0) {
+    snake.dy = -grid;
+    snake.dx = 0;
+  }
+  // right arrow key
+  else if (e.which === 39 && snake.dx === 0) {
+    snake.dx = grid;
+    snake.dy = 0;
+  }
+  // down arrow key
+  else if (e.which === 40 && snake.dy === 0) {
+    snake.dy = grid;
+    snake.dx = 0;
+  }
+});
+
+requestAnimationFrame(loop);
+</script>
+<!-- <input type="button" value="Close this window" onclick="self.close()"> -->
+
+<script src="static/assets_home/js/jquery.min.js"></script>
+    <script src="static/assets_home/bootstrap/js/bootstrap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-easing/1.4.1/jquery.easing.min.js"></script>
+    <script src="static/assets_home/js/agency.js"></script>
+</body>
+</html>
+<!-- {% endblock %} -->

@@ -1,0 +1,152 @@
+<!doctype html>
+<html lang="en">
+  <head>
+      <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <title>Mental Health Chatbot</title>
+
+    <title>Mental health chatbot</title>
+    <link rel="stylesheet" href="static/assets_home/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Montserrat:400,700">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Kaushan+Script">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Droid+Serif:400,700,400italic,700italic">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto+Slab:400,100,300,700">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Aguafina+Script">
+    <link rel="stylesheet" href="static/assets_home/fonts/font-awesome.min.css">
+
+    <style>
+        body,
+        html{
+            height: 100%;
+        }
+
+        .chat-container {
+            padding: 0px;
+            width: 1000px;
+            margin-left: 15%;
+            margin-right: 15%;
+        }
+
+        .chat-message {
+            padding: 20px;
+            border-radius: 20px;
+            margin-bottom: 3px;
+        }
+
+        .bot-message {
+            background: #ddb812;
+            max-width: 300px;
+            color: black;
+            margin-left: auto;
+        }
+
+        .human-message {
+            background: rgb(145, 182, 228);
+            max-width: 300px;
+            color: rgb(8, 6, 6);
+            margin: 13px 1px;
+        }
+
+        .input {
+            width: 1000px;
+            /*margin: 35px 0px;*/
+            margin-left: 15%;
+            margin-right: 15%;
+        }
+
+    </style>
+  </head>
+  <body id="page-top" style="background-color: rgb(56, 53, 53);">
+    <nav class="navbar navbar-dark navbar-expand-lg bg-dark" id="mainNav">
+        <div class="container"><a class="navbar-brand" href="/" style="font-family: 'Kaushan Script', cursive;font-weight: bold;font-style: normal;">BARDOS</a><button data-toggle="collapse" data-target="#navbarResponsive" class="navbar-toggler navbar-toggler-right" type="button"
+                data-toogle="collapse" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation"><i class="fa fa-bars"></i></button>
+            <div class="collapse navbar-collapse" id="navbarResponsive">
+                <ul class="nav navbar-nav ml-auto text-uppercase">
+                    <li class="nav-item" role="presentation"><a class="nav-link js-scroll-trigger" href="/services">Services</a></li>
+                    <li class="nav-item" role="presentation"></li>
+                    <li class="nav-item" role="presentation"><a class="nav-link js-scroll-trigger" href="/about">About</a></li>
+                    
+                    <li class="nav-item" role="presentation"><a class="nav-link js-scroll-trigger" href="/contact">Contact</a></li>
+                    <li class="nav-item" role="presentation"><a class="nav-link js-scroll-trigger" href="/extras">Extras</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+      <div class="container h-100" style="background-color: rgb(56, 53, 53); max-width: 80%;">
+        <div class="row align-items-center h-100" style="width: 80%;">
+                <div class="h-100 justify-content-center">
+                    <div class="chat-container" style="overflow: auto; max-height: 80vh">
+                        <!-- chat messages -->
+                        <div class="chat-message col-md-5 offset-md-7 bot-message">
+                          Welcome to Bardos! I can help you rediscover yourself, give you song recommendations based on your mood and recommend therapists to help you get the right professional help.
+                        </div>
+                    </div>
+                    <form id="target">
+                       <input class="input" type="text" value="" placeholder="Enter message..." id="input_message"/>
+                       <input type="submit" hidden>
+                    </form>
+                </div>
+            <div class="col-md-8 col-sm-12 mx-auto">
+            </div>
+        </div>
+    </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.min.js"></script>
+    <!-- <script src="static/custom.js"></script> -->
+    <script>
+        function submit_message(message) {
+            $.post('/send_message', { message: message }, handle_response);
+
+            function handle_response(data) {
+                // append the bot repsonse to the div
+                $('.chat-container').append(`
+                    <div class="chat-message col-md-5 offset-md-7 bot-message">
+                        ${data.message}
+                    </div>
+            `);
+                // remove the loading indicator
+                $('#loading').remove();
+            }
+        }
+
+        $('#target').on('submit', function(e) {
+            console.log('Submit called');
+            e.preventDefault();
+            const input_message = $('#input_message').val();
+            // return if the user does not enter any text
+            if (!input_message) {
+                return;
+            }
+
+            $('.chat-container').append(`
+                <div class="chat-message col-md-5 human-message">
+                    ${input_message}
+                </div>
+            `);
+
+            // loading
+            $('.chat-container').append(`
+                <div class="chat-message text-center col-md-2 offset-md-10 bot-message" id="loading">
+                    <b>...</b>
+                </div>
+            `);
+
+            // clear the text input
+            $('#input_message').val('');
+
+            // send the message
+            submit_message(input_message);
+        });
+
+    </script>
+
+<script src="static/assets_home/js/jquery.min.js"></script>
+<script src="static/assets_home/bootstrap/js/bootstrap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-easing/1.4.1/jquery.easing.min.js"></script>
+<script src="static/assets_home/js/agency.js"></script>
+  </body>
+</html>

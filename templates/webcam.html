@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+    <title>Home - Brand</title>
+    <link rel="stylesheet" href="static/assets_home/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Montserrat:400,700">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Kaushan+Script">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Droid+Serif:400,700,400italic,700italic">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto+Slab:400,100,300,700">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Aguafina+Script">
+    <link rel="stylesheet" href="static/assets_home/fonts/font-awesome.min.css">
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            const vid = document.querySelector('video');
+            navigator.mediaDevices.getUserMedia({
+                    video: true
+                }) // request cam
+                .then(stream => {
+                    vid.srcObject = stream; // don't use createObjectURL(MediaStream)
+                    return vid.play(); // returns a Promise
+                })
+                .then(() => { // enable the button
+                    const btn = document.querySelector('button');
+                    btn.disabled = false;
+                    btn.onclick = e => {
+                        takeASnap()
+                            .then(download);
+                    };
+                });
+
+            function takeASnap() {
+                const canvas = document.createElement('canvas'); // create a canvas
+                const ctx = canvas.getContext('2d'); // get its context
+                canvas.width = vid.videoWidth; // set its size to the one of the video
+                canvas.height = vid.videoHeight;
+                ctx.drawImage(vid, 0, 0); // the video
+                return new Promise((res, rej) => {
+                    canvas.toBlob(res, 'image/jpeg'); // request a Blob from the canvas
+                });
+            }
+
+            function download(blob) {
+                // uses the <a download> to download a Blob
+                let a = document.createElement('a');
+                a.href = URL.createObjectURL(blob);
+                a.download = 'screenshot.jpg';
+                document.body.appendChild(a);
+                a.click();
+            }
+        });
+    </script>
+</head>
+
+<body>
+    <nav class="navbar navbar-dark navbar-expand-lg bg-dark" id="mainNav">
+        <div class="container"><a class="navbar-brand" href="/" style="font-family: 'Kaushan Script', cursive;font-weight: bold;font-style: normal;">BARDOS</a>
+            <div class="collapse navbar-collapse" id="navbarResponsive">
+                <ul class="nav navbar-nav ml-auto text-uppercase">
+                    <li class="nav-item" role="presentation"><a class="nav-link js-scroll-trigger" href="/services">Services</a></li>
+                    <li class="nav-item" role="presentation"></li>
+                    <li class="nav-item" role="presentation"><a class="nav-link js-scroll-trigger" href="/about">About</a></li>
+                    
+                    <li class="nav-item" role="presentation"><a class="nav-link js-scroll-trigger" href="/contact">Contact</a></li>
+                    <li class="nav-item" role="presentation"><a class="nav-link js-scroll-trigger" href="/extras">Extras</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container">
+        <button>take a snapshot</button>
+        <video id="vid"></video>
+        <a href="/predict2">Predict</a>
+    </div>
+</body>
+</html>
