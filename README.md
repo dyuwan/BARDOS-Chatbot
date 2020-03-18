@@ -5,7 +5,7 @@
 <p>
 The bot utilises Cognitive Behavioural Therapy(CBT) techniques to provide counselling to distressed individuals.
 CBT is a talking therapy that help manage problems by changing the way a person thinks and behave. It is  most commonly used for treating anxiety and depression and other mental health conditions. 
-This chatbot is designed to use a set of classifiers, natural language processing algorithms and neural nets to achieve this goal.
+This chatbot is designed to use a set of classifiers, natural language processing algorithms and neural networks to achieve this goal.
 </p>
 
 <p>Developed by
