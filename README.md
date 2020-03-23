@@ -8,6 +8,11 @@ CBT is a talking therapy that help manage problems by changing the way a person 
 This chatbot is designed to use a set of classifiers, natural language processing algorithms and neural networks to achieve this goal.
 </p>
 
+<p>
+Video of the bot in action:
+  <li>https://www.youtube.com/watch?v=X9oyRQK3U_E</li>
+</p>
+
 <p>Developed by
   <li>Bhavya Sheth</li>
   <li>Anuj Raghani</li>
